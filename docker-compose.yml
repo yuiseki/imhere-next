@@ -1,8 +1,12 @@
 version: '3.9'
 services:
   mongodb:
-    image: mongo
-    command: --replSet rs0
+    image: mongo:4
+    healthcheck:
+      test: test $$(echo "rs.initiate({_id:'rs0',members:[{_id:0,host:\"mongodb:27017\"}]}).ok || rs.status().ok" | mongo --quiet) -eq 1
+      interval: 30s
+      start_period: 30s
+    command: ['--replSet', 'rs0']
     ports:
       - 27017:27017
     volumes:
@@ -19,7 +23,6 @@ services:
       - 3000:3000
     volumes:
       - .:/app
-      - bundle:/bundle
     depends_on:
       - mongodb
     networks:
@@ -27,8 +30,6 @@ services:
 
 volumes:
   mongodb:
-    driver: local
-  bundle:
     driver: local
 
 networks:

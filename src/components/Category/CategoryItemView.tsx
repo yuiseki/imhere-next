@@ -82,6 +82,55 @@ export const CategoryItemView: React.VFC<{
       <h3>
         [{category.genre.name}] {category.name} ({category.users.length})
       </h3>
+      {session && (
+        <div>
+          <span title="該当する（公開）">
+            <label htmlFor={category.id + '-public'}>
+              <input
+                type="radio"
+                id={category.id + '-public'}
+                name={category.id + '-select'}
+                value="public"
+                checked={checked === 'public'}
+                onChange={(e) => {
+                  onChange(e)
+                }}
+              />
+              &#127759;
+            </label>
+          </span>
+          <span title="該当する（非公開）">
+            <label htmlFor={category.id + '-private'}>
+              <input
+                type="radio"
+                id={category.id + '-private'}
+                name={category.id + '-select'}
+                value="private"
+                checked={checked === 'private'}
+                onChange={(e) => {
+                  onChange(e)
+                }}
+              />
+              &#128274;
+            </label>
+          </span>
+          <span title="該当しない">
+            <label htmlFor={category.id + '-null'}>
+              <input
+                type="radio"
+                id={category.id + '-null'}
+                name={category.id + '-select'}
+                value="none"
+                checked={checked === 'none'}
+                onChange={(e) => {
+                  onChange(e)
+                }}
+              />
+              &#127514;
+            </label>
+          </span>
+        </div>
+      )}
       <div style={{ minHeight: '30px' }}>
         {checked === 'private' && (
           <span style={{ opacity: 0.5 }}>
@@ -101,55 +150,6 @@ export const CategoryItemView: React.VFC<{
             return <UserIcon key={user.user.id} user={user.user} />
           })}
       </div>
-      {session && (
-        <div>
-          <div>
-            <label htmlFor={category.id + '-public'}>
-              <input
-                type="radio"
-                id={category.id + '-public'}
-                name={category.id + '-select'}
-                value="public"
-                checked={checked === 'public'}
-                onChange={(e) => {
-                  onChange(e)
-                }}
-              />
-              &#127759;該当する（公開）
-            </label>
-          </div>
-          <div>
-            <label htmlFor={category.id + '-private'}>
-              <input
-                type="radio"
-                id={category.id + '-private'}
-                name={category.id + '-select'}
-                value="private"
-                checked={checked === 'private'}
-                onChange={(e) => {
-                  onChange(e)
-                }}
-              />
-              &#128274;該当する（非公開）
-            </label>
-          </div>
-          <div>
-            <label htmlFor={category.id + '-null'}>
-              <input
-                type="radio"
-                id={category.id + '-null'}
-                name={category.id + '-select'}
-                value="none"
-                checked={checked === 'none'}
-                onChange={(e) => {
-                  onChange(e)
-                }}
-              />
-              &#127514;該当しない
-            </label>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

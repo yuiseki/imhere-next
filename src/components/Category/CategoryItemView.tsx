@@ -63,7 +63,8 @@ export const CategoryItemView: React.VFC<{
         body: JSON.stringify(body),
       })
 
-      mutate('/api/users/me')
+      await mutate('/api/users/me')
+      await mutate('/api/categories' + category.id)
     },
     []
   )

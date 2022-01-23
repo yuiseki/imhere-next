@@ -26,7 +26,7 @@ export const AddGenreForm: React.VFC<{
       body: JSON.stringify(body),
     })
 
-    mutate('/api/genres')
+    await mutate('/api/genres')
     try {
       form.current.reset()
     } catch (error) {

@@ -1,6 +1,6 @@
 export const Footer: React.VFC = () => {
   return (
-    <footer style={{ position: 'absolute', bottom: 0, right: 0 }}>
+    <footer style={{ position: 'absolute', right: 0 }}>
       Powered by{' '}
       <a href="https://nextjs.org/" target="_blank" rel="noopener noreferrer">
         Next.js

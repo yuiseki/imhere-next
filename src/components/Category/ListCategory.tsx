@@ -6,6 +6,9 @@ import { CategoryItemView } from './CategoryItemView'
 
 export const ListCategoryByGenre: React.VFC = () => {
   const { data: genres } = useSWR<Genre[]>('/api/genres', fetcher)
+  if (!genres) {
+    return <div>loading...</div>
+  }
   return (
     <div>
       {genres &&

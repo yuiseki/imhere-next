@@ -76,7 +76,7 @@ export const CategoryItemView: React.VFC<{
         margin: '10px',
         padding: '5px',
         border: '1px solid black',
-        width: '45vw',
+        minWidth: '15vw',
       }}
     >
       <h3>

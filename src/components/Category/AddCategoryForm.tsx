@@ -26,6 +26,7 @@ export const AddCategoryForm: React.VFC<{
       body: JSON.stringify(body),
     })
 
+    // TODO: genre.idをmutateする必要がある
     await mutate('/api/genres')
     try {
       form.current.reset()

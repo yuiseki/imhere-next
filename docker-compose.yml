@@ -4,19 +4,19 @@ services:
     image: mongo:4
     healthcheck:
       test: test $$(echo "rs.initiate({_id:'rs0',members:[{_id:0,host:\"mongodb:27017\"}]}).ok || rs.status().ok" | mongo --quiet) -eq 1
-      interval: 30s
+      interval: 10s
       start_period: 30s
     command: ['--replSet', 'rs0']
     ports:
       - 27017:27017
     volumes:
-      - mongodb:/data/db
+      - ./tmp/mongodb:/data/db
     restart: unless-stopped
     networks:
-      - next
+      - imhere
   next:
     build: .
-    command: bash -c "prisma generate && npm run dev"
+    command: bash -c "prisma generate && prisma db push && npm run dev"
     env_file:
       - .env.docker
     ports:
@@ -26,12 +26,8 @@ services:
     depends_on:
       - mongodb
     networks:
-      - next
-
-volumes:
-  mongodb:
-    driver: local
+      - imhere
 
 networks:
-  next:
-    name: next
+  imhere:
+    name: imhere

@@ -1,5 +1,5 @@
 const main = async () => {
-  console.log('sample job written by typescript')
+  console.info('sample job written by typescript')
 }
 
 ;(async () => {

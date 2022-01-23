@@ -14,4 +14,31 @@ export default NextAuth({
       clientSecret: process.env.TWITTER_CLIENT_SECRET,
     }),
   ],
+  callbacks: {
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.uid
+      }
+      return session
+    },
+    jwt: async ({ user, token, profile }) => {
+      if (profile && user) {
+        const isAdmin = profile.screen_name === 'yuiseki_'
+        await prisma.user.update({
+          where: { id: user.id },
+          data: {
+            screenName: profile.screen_name,
+            isAdmin: isAdmin,
+          },
+        })
+      }
+      if (user) {
+        token.uid = user.id
+      }
+      return token
+    },
+  },
+  session: {
+    strategy: 'jwt',
+  },
 })

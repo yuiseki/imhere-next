@@ -1,15 +1,20 @@
 import { signIn, signOut, useSession } from 'next-auth/react'
 
-export const SignInStatus = () => {
+export const SignInStatus: React.VFC = () => {
   const { data: session, status } = useSession()
   const loading = status === 'loading'
   return (
-    <div>
+    <div style={{ padding: '5px', position: 'absolute', top: 0, right: 0 }}>
       {loading && <>Loading...</>}
       {session && (
         <>
-          Signed in as <img src={session.user.image} height={'20px'} />{' '}
-          {session.user.name}{' '}
+          Signed in as{' '}
+          <img
+            alt={session.user.name}
+            title={session.user.name}
+            src={session.user.image}
+            height={'20px'}
+          />{' '}
           <button
             onClick={() => {
               signOut()

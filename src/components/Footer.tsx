@@ -1,4 +1,4 @@
-export const Footer = () => {
+export const Footer: React.VFC = () => {
   return (
     <footer style={{ position: 'absolute', bottom: 0, right: 0 }}>
       Powered by{' '}

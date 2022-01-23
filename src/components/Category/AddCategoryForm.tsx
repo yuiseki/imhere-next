@@ -7,7 +7,7 @@ export const AddCategoryForm: React.VFC<{
   csrfToken: string
 }> = ({ csrfToken }) => {
   const form = useRef<HTMLFormElement>()
-  const { data: genres } = useSWR<Genre[]>('/api/genre', fetcher)
+  const { data: genres } = useSWR<Genre[]>('/api/genres', fetcher)
   const { mutate } = useSWRConfig()
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

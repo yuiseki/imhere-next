@@ -28,17 +28,12 @@ const ListCategoryOfGenre: React.VFC<{ genre: Genre }> = ({ genre }) => {
   return (
     <>
       {categories && categories.length > 0 && (
-        <>
-          <h2>{genre.name}</h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-            {categories &&
-              categories.map((category) => {
-                return (
-                  <CategoryItemView key={category.id} category={category} />
-                )
-              })}
-          </div>
-        </>
+        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+          {categories &&
+            categories.map((category) => {
+              return <CategoryItemView key={category.id} category={category} />
+            })}
+        </div>
       )}
     </>
   )

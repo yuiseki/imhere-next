@@ -73,10 +73,10 @@ export const CategoryItemView: React.VFC<{
     <div
       key={category.id}
       style={{
-        margin: '10px',
+        margin: '5px',
         padding: '5px',
         border: '1px solid black',
-        minWidth: '15vw',
+        maxWidth: '15vw',
       }}
     >
       <h3>

@@ -84,18 +84,18 @@ export const CategoryItemView: React.VFC<{
       </h3>
       <div style={{ minHeight: '30px' }}>
         {checked === 'private' && (
-          <div style={{ opacity: 0.5 }}>
+          <span style={{ opacity: 0.5 }}>
             <UserIcon user={me} />
-          </div>
+          </span>
         )}
         {checked === 'public' && (
-          <div>
+          <span>
             <UserIcon user={me} />
-          </div>
+          </span>
         )}
         {category.users
           .filter((user) => {
-            return user.id === me.id
+            return user.user.id !== me?.id
           })
           .map((user) => {
             return <UserIcon key={user.user.id} user={user.user} />

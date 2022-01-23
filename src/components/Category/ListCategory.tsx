@@ -13,7 +13,12 @@ export const ListCategoryByGenre: React.VFC = () => {
     <div>
       {genres &&
         genres.map((genre) => {
-          return <ListCategoryOfGenre key={genre.id} genre={genre} />
+          return (
+            <>
+              <hr />
+              <ListCategoryOfGenre key={genre.id} genre={genre} />
+            </>
+          )
         })}
     </div>
   )

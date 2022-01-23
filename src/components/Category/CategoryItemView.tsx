@@ -64,7 +64,7 @@ export const CategoryItemView: React.VFC<{
       })
 
       await mutate('/api/users/me')
-      await mutate('/api/categories' + category.id)
+      await mutate('/api/genres/' + category.genreId)
     },
     []
   )
@@ -88,9 +88,18 @@ export const CategoryItemView: React.VFC<{
             <UserIcon user={me} />
           </div>
         )}
-        {category.users.map((user) => {
-          return <UserIcon key={user.user.id} user={user.user} />
-        })}
+        {checked === 'public' && (
+          <div>
+            <UserIcon user={me} />
+          </div>
+        )}
+        {category.users
+          .filter((user) => {
+            return user.id === me.id
+          })
+          .map((user) => {
+            return <UserIcon key={user.user.id} user={user.user} />
+          })}
       </div>
       {session && (
         <div>

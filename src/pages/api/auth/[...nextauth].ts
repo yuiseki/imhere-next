@@ -24,12 +24,13 @@ export default NextAuth({
     jwt: async ({ user, token, profile }) => {
       if (profile && user) {
         const isAdmin = profile.screen_name === 'yuiseki_'
+        const data = {
+          screenName: profile.screen_name,
+          isAdmin: isAdmin,
+        }
         await prisma.user.update({
           where: { id: user.id },
-          data: {
-            screenName: profile.screen_name,
-            isAdmin: isAdmin,
-          },
+          data: data,
         })
       }
       if (user) {

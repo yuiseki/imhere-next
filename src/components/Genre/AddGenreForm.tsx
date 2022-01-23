@@ -6,7 +6,7 @@ import fetcher from '~/lib/fetcher'
 export const AddGenreForm: React.VFC<{
   csrfToken: string
 }> = ({ csrfToken }) => {
-  const { data: genres } = useSWR<Genre[]>('/api/genre', fetcher)
+  const { data: genres } = useSWR<Genre[]>('/api/genres', fetcher)
   const form = useRef<HTMLFormElement>()
   const { mutate } = useSWRConfig()
 
@@ -26,7 +26,7 @@ export const AddGenreForm: React.VFC<{
       body: JSON.stringify(body),
     })
 
-    mutate('/api/genre')
+    mutate('/api/genres')
     try {
       form.current.reset()
     } catch (error) {

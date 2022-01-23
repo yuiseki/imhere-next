@@ -5,7 +5,7 @@ import { CategoryWithUsers } from '~/types/CategoryWithUsers'
 import { CategoryItemView } from './CategoryItemView'
 
 export const ListCategoryByGenre: React.VFC = () => {
-  const { data: genres } = useSWR<Genre[]>('/api/genre', fetcher)
+  const { data: genres } = useSWR<Genre[]>('/api/genres', fetcher)
   return (
     <div>
       {genres &&

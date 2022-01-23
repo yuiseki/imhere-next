@@ -20,7 +20,7 @@ export const AddGenreForm: React.VFC<{
       'Content-Type': 'application/json',
     }
 
-    await fetch('/api/genre', {
+    await fetch('/api/genres', {
       method: 'POST',
       headers: headers,
       body: JSON.stringify(body),

@@ -64,6 +64,7 @@ export const CategoryItemView: React.VFC<{
       })
 
       mutate('/api/categories')
+      mutate('/api/genres')
     },
     []
   )

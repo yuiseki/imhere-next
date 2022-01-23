@@ -18,7 +18,7 @@ export const ListCategoryByGenre: React.VFC = () => {
 
 const ListCategoryOfGenre: React.VFC<{ genre: Genre }> = ({ genre }) => {
   const { data: categories } = useSWR<CategoryWithUsers[]>(
-    '/api/genre/' + genre.id,
+    '/api/genres/' + genre.id,
     fetcher
   )
 

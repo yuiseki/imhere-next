@@ -27,6 +27,7 @@ export const AddCategoryForm: React.VFC<{
     })
 
     mutate('/api/categories')
+    mutate('/api/genre')
     mutate('/api/genre/' + formData['genreId'])
     try {
       form.current.reset()

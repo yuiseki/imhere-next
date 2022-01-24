@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '~/lib/prisma'
 
 const handler = async (
   req: NextApiRequest,
@@ -12,15 +11,24 @@ const handler = async (
     res.status(403).json(undefined)
     return
   }
-  const result = await prisma.user.findUnique({
+  const result = await prisma.user.findFirst({
     where: {
       id: session.user.id,
     },
     include: {
+      _count: {
+        select: {
+          accounts: true,
+          sessions: true,
+        },
+      },
       categories: {
+        where: {
+          status: 'public',
+        },
         select: {
           categoryId: true,
-          isPublic: true,
+          status: true,
         },
       },
     },

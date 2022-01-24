@@ -1,14 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { PrismaClient } from '@prisma/client'
 import { getSession } from 'next-auth/react'
-const prisma = new PrismaClient()
+import { prisma } from '~/lib/prisma'
 
 const put = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req })
   const data = {
     category: { connect: { id: req.body.categoryId } },
     user: { connect: { id: session.user.id } },
-    isPublic: req.body.isPublic,
+    status: req.body.status,
   }
   if (req.body.isPublic !== null) {
     const result = await prisma.categoryOnUser.upsert({

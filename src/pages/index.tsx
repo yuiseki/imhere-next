@@ -7,7 +7,7 @@ import { Footer } from '~/components/Footer'
 import { SignInStatus } from '~/components/SignInStatus'
 
 const Home: React.VFC = ({ csrfToken }: { csrfToken: string }) => {
-  const title = 'imhere - マイノリティが自分はここにいると伝えるための場所'
+  const title = '#imhere - マイノリティが自分はここにいると伝えるための場所'
   return (
     <div
       className="container"

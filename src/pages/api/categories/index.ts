@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '~/lib/prisma'
 
 const get = async (req: NextApiRequest, res: NextApiResponse) => {
   const results = await prisma.category.findMany({

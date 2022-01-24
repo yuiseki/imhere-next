@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { prisma } from '~/lib/prisma'
 
 const get = async (req: NextApiRequest, res: NextApiResponse) => {
   const results = await prisma.category.findMany({
@@ -14,14 +13,20 @@ const get = async (req: NextApiRequest, res: NextApiResponse) => {
     select: {
       id: true,
       name: true,
+      _count: {
+        select: {
+          users: true,
+        },
+      },
       genre: {
         select: {
+          id: true,
           name: true,
         },
       },
       users: {
         where: {
-          isPublic: true,
+          status: 'public',
         },
         select: {
           user: {

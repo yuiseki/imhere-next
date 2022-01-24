@@ -1,56 +1,24 @@
 import { useSession } from 'next-auth/react'
-import React, { useCallback, useEffect, useState } from 'react'
-import useSWR, { useSWRConfig } from 'swr'
-import fetcher from '~/lib/fetcher'
+import React, { useCallback } from 'react'
+import { useSWRConfig } from 'swr'
+import { useCategoryState as useCategoryStatus } from '~/hooks/useCategoryState'
 import { CategoryWithUsers } from '~/types/CategoryWithUsers'
-import { UserWithCategories } from '~/types/UserWithCategories'
 import { UserIcon } from '../UserIcon'
 
-export const CategoryItemView: React.VFC<{
+const CategoryItemStateSelector: React.VFC<{
   category: CategoryWithUsers
 }> = ({ category }) => {
   const { data: session } = useSession()
-  const { data: me } = useSWR<UserWithCategories>('/api/users/me', fetcher)
-  const [checked, setChecked] = useState('none')
   const { mutate } = useSWRConfig()
 
-  useEffect(() => {
-    me?.categories
-      .filter((c) => {
-        return c.categoryId === category.id
-      })
-      .map((c) => {
-        switch (c.isPublic) {
-          case true:
-            setChecked('public')
-            break
-          case false:
-            setChecked('private')
-            break
-          default:
-            setChecked('none')
-            break
-        }
-      })
-  }, [me])
+  const [status, setStatus] = useCategoryStatus(category)
 
   const onChange = useCallback(
     async (event: React.FormEvent<HTMLInputElement>) => {
-      setChecked(event.currentTarget.value)
-      let applicableValue = null
-      switch (event.currentTarget.value) {
-        case 'public':
-          applicableValue = true
-          break
-        case 'private':
-          applicableValue = false
-          break
-        default:
-          break
-      }
+      setStatus(event.currentTarget.value)
       const body: any = {
         categoryId: category.id,
-        isPublic: applicableValue,
+        status: event.currentTarget.value,
       }
 
       const headers = {
@@ -69,6 +37,61 @@ export const CategoryItemView: React.VFC<{
     []
   )
 
+  if (!session) return null
+  return (
+    <div>
+      <span title="該当する（公開）">
+        <label htmlFor={category.id + '-public'}>
+          <input
+            type="radio"
+            id={category.id + '-public'}
+            name={category.id + '-select'}
+            value="public"
+            checked={status === 'public'}
+            onChange={(e) => {
+              onChange(e)
+            }}
+          />
+          &#127759;
+        </label>
+      </span>
+      <span title="該当する（非公開）">
+        <label htmlFor={category.id + '-private'}>
+          <input
+            type="radio"
+            id={category.id + '-private'}
+            name={category.id + '-select'}
+            value="private"
+            checked={status === 'private'}
+            onChange={(e) => {
+              onChange(e)
+            }}
+          />
+          &#128274;
+        </label>
+      </span>
+      <span title="該当しない">
+        <label htmlFor={category.id + '-null'}>
+          <input
+            type="radio"
+            id={category.id + '-null'}
+            name={category.id + '-select'}
+            value="none"
+            checked={status === 'none'}
+            onChange={(e) => {
+              onChange(e)
+            }}
+          />
+          &#127514;
+        </label>
+      </span>
+    </div>
+  )
+}
+
+export const CategoryItemView: React.VFC<{
+  category: CategoryWithUsers
+}> = ({ category }) => {
   return (
     <div
       key={category.id}
@@ -79,76 +102,16 @@ export const CategoryItemView: React.VFC<{
         maxWidth: '15vw',
       }}
     >
-      <h3>
-        [{category.genre.name}] {category.name} ({category.users.length})
-      </h3>
-      {session && (
-        <div>
-          <span title="該当する（公開）">
-            <label htmlFor={category.id + '-public'}>
-              <input
-                type="radio"
-                id={category.id + '-public'}
-                name={category.id + '-select'}
-                value="public"
-                checked={checked === 'public'}
-                onChange={(e) => {
-                  onChange(e)
-                }}
-              />
-              &#127759;
-            </label>
-          </span>
-          <span title="該当する（非公開）">
-            <label htmlFor={category.id + '-private'}>
-              <input
-                type="radio"
-                id={category.id + '-private'}
-                name={category.id + '-select'}
-                value="private"
-                checked={checked === 'private'}
-                onChange={(e) => {
-                  onChange(e)
-                }}
-              />
-              &#128274;
-            </label>
-          </span>
-          <span title="該当しない">
-            <label htmlFor={category.id + '-null'}>
-              <input
-                type="radio"
-                id={category.id + '-null'}
-                name={category.id + '-select'}
-                value="none"
-                checked={checked === 'none'}
-                onChange={(e) => {
-                  onChange(e)
-                }}
-              />
-              &#127514;
-            </label>
-          </span>
-        </div>
-      )}
+      <div>
+        <b>
+          [{category.genre.name}] {category.name} ({category.users.length})
+        </b>
+      </div>
+      <CategoryItemStateSelector category={category} />
       <div style={{ minHeight: '30px' }}>
-        {checked === 'private' && (
-          <span style={{ opacity: 0.5 }}>
-            <UserIcon user={me} />
-          </span>
-        )}
-        {checked === 'public' && (
-          <span>
-            <UserIcon user={me} />
-          </span>
-        )}
-        {category.users
-          .filter((user) => {
-            return user.user.id !== me?.id
-          })
-          .map((user) => {
-            return <UserIcon key={user.user.id} user={user.user} />
-          })}
+        {category.users.map((user) => {
+          return <UserIcon key={user.user.id} user={user.user} />
+        })}
       </div>
     </div>
   )

@@ -1,9 +1,7 @@
 import NextAuth from 'next-auth'
 import TwitterProvider from 'next-auth/providers/twitter'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { prisma } from '~/lib/prisma'
 
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,

@@ -11,10 +11,10 @@ export const AdminView: React.VFC<{
   return (
     <>
       {me?.isAdmin && (
-        <>
+        <div style={{ border: '1px solid black' }}>
           <AddGenreForm csrfToken={csrfToken} />
           <AddCategoryForm csrfToken={csrfToken} />
-        </>
+        </div>
       )}
     </>
   )

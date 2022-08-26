@@ -5,6 +5,7 @@ ENV PATH ./node_modules/.bin:$PATH
 
 COPY . /app/
 RUN npm ci
+RUN npm run build
 
 EXPOSE 3000
 
